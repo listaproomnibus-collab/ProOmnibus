@@ -1,0 +1,5 @@
+# Segreti e configurazione con credenziali: mai committarli
+/config.php
+/.env
+.DS_Store
+Thumbs.db

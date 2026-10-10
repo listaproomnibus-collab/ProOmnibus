@@ -1,0 +1,7 @@
+DirectoryIndex index.html
+Options -Indexes
+
+# Blocca l'accesso diretto alla configurazione e ai file di installazione.
+<FilesMatch "^(config\.php|config\.example\.php|database\.sql|README\.md|\.gitignore)$">
+  Require all denied
+</FilesMatch>

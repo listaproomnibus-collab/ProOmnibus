@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B1220">
+<title>Pro Omnibus · Mercatino Libri</title>
+<style>
+:root{--bg:#f6f7fb;--surface:#fff;--ink:#0f172a;--muted:#667085;--line:#e5e7eb;--brand:#2563eb;--brand2:#1d4ed8;--soft:#eff6ff;--green:#16a34a;--danger:#dc2626;--shadow:0 18px 50px rgba(15,23,42,.08)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 10% 0%,#dbeafe 0,transparent 28%),radial-gradient(circle at 90% 10%,#dcfce7 0,transparent 24%),var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.wrap{width:min(1180px,calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);border-bottom:1px solid rgba(229,231,235,.85)}
+.topbar-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.brand-mark{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--brand),#60a5fa);color:#fff;display:grid;place-items:center;font-weight:900;box-shadow:0 12px 24px rgba(37,99,235,.25)}
+.brand-title{font-weight:900;letter-spacing:-.03em;font-size:1.05rem}
+.brand-sub{font-size:.74rem;color:var(--muted)}
+.nav{display:flex;align-items:center;gap:8px}
+.nav button{border:0;background:transparent;color:#475467;padding:10px 14px;border-radius:12px;font-weight:700}
+.nav button:hover,.nav button.active{background:#0f172a;color:#fff}
+.nav .admin-link{display:none}
+.nav .admin-link.show{display:inline-flex}
+.hero{padding:60px 0 32px}
+.hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:34px;align-items:stretch}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(239,246,255,.9);border:1px solid #bfdbfe;padding:8px 12px;border-radius:999px;font-size:.78rem;font-weight:800;color:#1e3a8a}
+.hero h1{font-size:clamp(2.7rem,7vw,5.5rem);line-height:.93;letter-spacing:-.07em;margin:18px 0 20px;max-width:760px}
+.hero h1 span{background:linear-gradient(135deg,#0f172a 15%,#1d4ed8 60%,#60a5fa);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:1.08rem;color:#5b6472;max-width:650px;line-height:1.7;margin:0 0 26px}
+.actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{border:0;border-radius:14px;padding:13px 17px;font-weight:800;transition:.2s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{background:#0f172a;color:#fff;box-shadow:0 10px 24px rgba(15,23,42,.18)}
+.btn-secondary{background:#fff;color:#0f172a;border:1px solid var(--line)}
+.btn-danger{background:#fee2e2;color:#991b1b}
+.btn-green{background:#dcfce7;color:#166534}
+.btn-taken{background:#dbeafe;color:#2563eb}
+.btn-taken:hover{background:#dbeafe}
+.status{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:6px 9px;font-size:.68rem;font-weight:800}
+.status.available{background:#dcfce7;color:#166534}
+.status.taken{background:#f3f4f6;color:#6b7280}
+.hero-card{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.9);border-radius:28px;padding:22px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:space-between;min-height:340px}
+.hero-card-top{display:flex;justify-content:space-between;align-items:center}
+.pill{padding:7px 10px;border-radius:999px;background:var(--soft);color:#1d4ed8;font-size:.75rem;font-weight:800}
+.mini-stack{display:grid;gap:12px;margin-top:26px}
+.mini-item{display:flex;align-items:center;justify-content:space-between;padding:15px 16px;background:#fff;border:1px solid var(--line);border-radius:16px}
+.mini-item strong{font-size:1.25rem}
+.section{padding:20px 0 58px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-bottom:18px}
+.section-head h2{margin:0;font-size:1.8rem;letter-spacing:-.04em}
+.section-head p{margin:5px 0 0;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0 26px}
+.stat{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:20px;padding:18px}
+.stat small{display:block;color:var(--muted);font-weight:700}
+.stat strong{display:block;font-size:2rem;margin-top:4px;letter-spacing:-.04em}
+.toolbar{background:rgba(255,255,255,.82);border:1px solid var(--line);border-radius:22px;padding:14px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.field{width:100%;padding:12px 13px;border:1px solid #dbe1e8;background:#fff;border-radius:13px;outline:none}
+.field:focus{border-color:#60a5fa;box-shadow:0 0 0 4px rgba(167,139,250,.15)}
+.book-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.book{background:#fff;border:1px solid var(--line);border-radius:22px;overflow:hidden;box-shadow:0 7px 25px rgba(15,23,42,.05);transition:.22s;display:flex;flex-direction:column}
+.book:hover{transform:translateY(-4px);box-shadow:0 22px 40px rgba(15,23,42,.10)}
+.cover{aspect-ratio:4/5;background:linear-gradient(135deg,#dbeafe,#eff6ff);display:grid;place-items:center;position:relative;overflow:hidden}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.cover-fallback{text-align:center;padding:24px;color:#6b7280}
+.cover-fallback b{display:block;font-size:2rem;color:#93c5fd;margin-bottom:8px}
+.tagrow{position:absolute;left:12px;top:12px;right:12px;display:flex;justify-content:space-between;gap:8px}
+.tag{background:rgba(17,24,39,.86);color:#fff;border-radius:999px;padding:6px 9px;font-size:.68rem;font-weight:800}
+.tag.light{background:rgba(255,255,255,.92);color:#0f172a}
+.book-body{padding:15px;display:flex;flex-direction:column;gap:11px;flex:1}
+.book-title{margin:0;font-size:1.05rem;line-height:1.25;letter-spacing:-.02em}
+.meta{display:flex;gap:8px;flex-wrap:wrap;color:#667085;font-size:.78rem}
+.meta span{background:#f8fafc;border:1px solid #eef2f6;padding:6px 8px;border-radius:9px}
+.book-foot{margin-top:auto;padding-top:12px;border-top:1px solid #eef2f7;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.seller{font-size:.8rem;color:#667085}
+.seller b{display:block;color:#344054}
+.empty{padding:50px 18px;text-align:center;color:var(--muted);border:1px dashed #cfd6df;background:#fff;border-radius:20px}
+.view{display:none}
+.view.active{display:block}
+.form-card,.admin-card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.form-group{display:grid;gap:7px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:.82rem;font-weight:800;color:#344054}
+.textarea{min-height:110px;resize:vertical}
+.upload{border:1.5px dashed #cbd5e1;border-radius:18px;padding:18px;background:#fafafa}
+.upload input{display:block;width:100%}
+.preview{margin-top:12px;display:none}
+.preview img{max-width:180px;border-radius:16px;border:1px solid var(--line)}
+.admin-login{max-width:500px;margin:20px auto}
+.admin-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:16px}
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th,.admin-table td{padding:13px 9px;border-bottom:1px solid #eef2f6;text-align:left;vertical-align:middle}
+.admin-table th{font-size:.74rem;text-transform:uppercase;color:#667085}
+.admin-thumb{width:46px;height:58px;border-radius:9px;object-fit:cover;background:#f1f5f9}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.54);display:none;align-items:center;justify-content:center;padding:16px;z-index:60}
+.modal.open{display:flex}
+.modal-panel{width:min(520px,100%);background:#fff;border-radius:24px;padding:22px;box-shadow:0 30px 80px rgba(0,0,0,.2)}
+.modal-panel h3{margin-top:0}
+.close{border:0;background:#f2f4f7;border-radius:12px;padding:8px 11px}
+.toast{position:fixed;right:18px;bottom:18px;z-index:80;background:#0f172a;color:#fff;padding:12px 15px;border-radius:14px;box-shadow:0 18px 40px rgba(0,0,0,.2);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+.toast.show{opacity:1;transform:translateY(0)}
+footer{padding:30px 0 46px;color:#667085;text-align:center;font-size:.82rem}
+.hidden{display:none!important}
+.small{font-size:.78rem;color:var(--muted)}
+
+@media(max-width:980px){
+.hero-grid{grid-template-columns:1fr}
+.book-grid{grid-template-columns:repeat(3,1fr)}
+.toolbar{grid-template-columns:1.6fr 1fr 1fr}
+.toolbar .last{grid-column:auto}
+.stats{grid-template-columns:repeat(3,1fr)}
+}
+
+@media(max-width:760px){
+.topbar-inner{height:auto;min-height:68px;flex-wrap:wrap;padding:9px 0}
+.nav{width:100%;overflow:auto}
+.nav button{white-space:nowrap}
+.hero{padding-top:38px}
+.hero-grid{gap:18px}
+.hero-card{min-height:unset}
+.book-grid{grid-template-columns:repeat(2,1fr)}
+.toolbar{grid-template-columns:1fr 1fr}
+.toolbar .search{grid-column:1/-1}
+.form-grid{grid-template-columns:1fr}
+.form-group.full{grid-column:auto}
+.stats{grid-template-columns:1fr 1fr}
+.stat:last-child{grid-column:1/-1}
+}
+
+@media(max-width:480px){
+.wrap{width:min(100% - 20px,1180px)}
+.hero h1{font-size:3.4rem}
+.book-grid{grid-template-columns:1fr}
+.toolbar{grid-template-columns:1fr}
+.toolbar .search{grid-column:auto}
+.stats{grid-template-columns:1fr}
+.stat:last-child{grid-column:auto}
+.book-foot{align-items:stretch;flex-direction:column}
+.book-foot .btn{width:100%}
+.admin-table th:nth-child(2),
+.admin-table td:nth-child(2),
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4){display:none}
+}
+
+
+/* ===== PRO OMNIBUS · DESIGN SYSTEM BLUE EDITION ===== */
+:root{
+  --bg:#F4F7FC;
+  --surface:#FFFFFF;
+  --ink:#0B1220;
+  --muted:#64748B;
+  --line:#DFE7F2;
+  --brand:#315BFF;
+  --brand2:#2547D8;
+  --soft:#EAF3FF;
+  --green:#315BFF;
+  --danger:#FF786B;
+  --shadow:0 20px 55px rgba(11,18,32,.09);
+}
+html,body{max-width:100%;overflow-x:clip}
+html{scroll-behavior:smooth;scroll-padding-top:92px}
+body{
+  background:
+    radial-gradient(ellipse at 6% 7%,rgba(85,214,245,.13),transparent 27%),
+    radial-gradient(ellipse at 94% 35%,rgba(49,91,255,.07),transparent 26%),
+    var(--bg);
+  color:var(--ink);
+  letter-spacing:-.01em;
+}
+button,input,select,textarea{min-width:0}
+.wrap{width:min(1180px,calc(100% - 40px))}
+.topbar{
+  background:rgba(244,247,252,.9);
+  border-bottom:1px solid rgba(223,231,242,.85);
+  box-shadow:0 4px 24px rgba(11,18,32,.035);
+}
+.topbar-inner{min-width:0}
+.brand{flex-shrink:0;gap:13px}
+.brand-mark{
+  border-radius:15px;
+  background:linear-gradient(145deg,#315BFF 5%,#55D6F5 100%);
+  box-shadow:0 10px 24px rgba(49,91,255,.27),inset 0 1px 0 rgba(255,255,255,.35);
+  letter-spacing:-.06em;
+}
+.brand-title{font-size:1.08rem;letter-spacing:-.04em}
+.brand-sub{display:block;margin-top:2px;color:#64748B}
+.nav{flex-wrap:wrap;justify-content:flex-end;min-width:0;gap:6px}
+.nav button{color:#526079;padding:10px 13px;transition:background .2s,color .2s,transform .2s}
+.nav button:hover,.nav button.active{background:#0B1220;color:#fff;box-shadow:0 6px 16px rgba(11,18,32,.14)}
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  padding:68px 0 58px;
+  background:linear-gradient(120deg,#0B1220 0%,#101D37 56%,#142A50 100%);
+  color:#fff;
+}
+.hero::before,.hero::after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(2px)}
+.hero::before{width:540px;height:540px;right:-180px;top:-270px;background:radial-gradient(circle,rgba(49,91,255,.34),rgba(49,91,255,0) 70%)}
+.hero::after{width:430px;height:430px;left:25%;bottom:-340px;background:radial-gradient(circle,rgba(85,214,245,.2),rgba(85,214,245,0) 72%)}
+.hero-grid{position:relative;z-index:1;gap:clamp(24px,4vw,50px);align-items:center}
+.eyebrow{
+  color:#AEEFFF;background:rgba(85,214,245,.09);border:1px solid rgba(85,214,245,.28);
+  padding:9px 13px;letter-spacing:.045em;text-transform:uppercase;
+}
+.hero h1{color:#fff;font-size:clamp(2.8rem,6.6vw,5.65rem);letter-spacing:-.075em;line-height:.96;margin:22px 0}
+.hero h1 span{
+  background:linear-gradient(100deg,#FFFFFF 0%,#AEEFFF 36%,#6F91FF 82%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{color:#C5D1E4;line-height:1.75;font-size:clamp(1rem,1.4vw,1.1rem)}
+.btn{border-radius:13px;padding:13px 17px;transition:transform .2s,box-shadow .2s,background .2s;letter-spacing:-.015em}
+.btn:hover{transform:translateY(-2px)}
+.btn-primary{background:linear-gradient(135deg,#315BFF,#2547D8);color:#fff;box-shadow:0 10px 24px rgba(49,91,255,.25)}
+.btn-primary:hover{box-shadow:0 14px 30px rgba(49,91,255,.34)}
+.btn-secondary{background:rgba(255,255,255,.94);color:#0B1220;border:1px solid #DDE5F0;box-shadow:0 4px 12px rgba(11,18,32,.04)}
+.btn-danger{background:#FFF0EE;color:#B9382B;border:1px solid #FFD0CA}
+.btn-green{background:#315BFF;color:#fff;box-shadow:0 6px 15px rgba(49,91,255,.16)}
+.btn-green:hover{background:#2547D8}
+.btn-taken{background:#EAF3FF;color:#2547D8}
+.hero-card{
+  position:relative;isolation:isolate;overflow:hidden;min-height:365px;padding:24px;
+  background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));
+  border:1px solid rgba(197,209,228,.22);border-radius:27px;
+  box-shadow:0 25px 75px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.1);
+  color:#fff;backdrop-filter:blur(14px);
+}
+.hero-card::after{content:"";position:absolute;z-index:-1;width:220px;height:220px;right:-120px;bottom:-120px;border-radius:50%;background:rgba(85,214,245,.15);filter:blur(5px)}
+.hero-card-top{gap:12px;align-items:flex-start}
+.hero-card-top strong{font-size:1.05rem;line-height:1.4;max-width:230px}
+.pill{background:rgba(85,214,245,.13);color:#AEEFFF;border:1px solid rgba(85,214,245,.22);white-space:nowrap}
+.mini-stack{gap:10px;margin-top:24px}
+.mini-item{padding:14px 15px;background:rgba(8,17,34,.48);border:1px solid rgba(197,209,228,.12);border-radius:15px;gap:12px}
+.mini-item small{color:#AAB8CE}
+.mini-item strong{display:block;color:#fff;font-size:1.45rem;letter-spacing:-.04em}
+.mini-item>span{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:rgba(85,214,245,.1);font-size:1.2rem}
+.hero-card .small{color:#AAB8CE;line-height:1.6;margin-top:17px}
+.section{padding:34px 0 66px}
+.section-head{margin-bottom:22px;align-items:center}
+.section-head h2{font-size:clamp(1.65rem,3vw,2rem);letter-spacing:-.055em;color:#0B1220}
+.section-head h2::after{content:"";display:block;width:42px;height:4px;border-radius:10px;margin-top:11px;background:linear-gradient(90deg,#315BFF,#55D6F5)}
+.section-head p{color:#64748B;line-height:1.6}
+.stats{gap:14px;margin:20px 0 26px}
+.stat{position:relative;overflow:hidden;background:rgba(255,255,255,.9);border:1px solid #DFE7F2;border-radius:19px;padding:20px;box-shadow:0 7px 22px rgba(11,18,32,.035)}
+.stat::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,#315BFF,#55D6F5)}
+.stat small{color:#64748B}
+.stat strong{font-size:2.15rem;letter-spacing:-.06em;color:#0B1220}
+.toolbar{background:rgba(255,255,255,.88);border:1px solid #DFE7F2;border-radius:20px;padding:13px;gap:10px;box-shadow:0 8px 24px rgba(11,18,32,.035)}
+.field{border-color:#D9E2EF;background:#fff;border-radius:12px;color:#0B1220;transition:border-color .2s,box-shadow .2s}
+.field::placeholder{color:#8A97AB}
+.field:focus{border-color:#55D6F5;box-shadow:0 0 0 4px rgba(85,214,245,.17)}
+.book-grid{gap:18px}
+.book{border-color:#E0E7F1;border-radius:21px;box-shadow:0 9px 27px rgba(11,18,32,.045);transition:transform .25s,box-shadow .25s,border-color .25s}
+.book:hover{transform:translateY(-5px);border-color:rgba(49,91,255,.28);box-shadow:0 22px 42px rgba(11,18,32,.105)}
+.cover{background:linear-gradient(145deg,#E5F7FF 0%,#EAF0FF 55%,#DCE5FF 100%)}
+.cover-fallback{color:#64748B}
+.cover-fallback b{color:#315BFF}
+.tag{background:rgba(11,18,32,.9)}
+.tag.light{background:rgba(244,247,252,.96);color:#2547D8}
+.book-body{padding:16px;gap:12px}
+.book-title{font-size:1.03rem;letter-spacing:-.035em;line-height:1.32;color:#0B1220}
+.meta{color:#64748B}
+.meta span{background:#F4F7FC;border-color:#E6ECF4;color:#526079}
+.book-foot{border-top-color:#E8EDF5;align-items:end}
+.seller{color:#77849A}
+.seller b{color:#34435D;margin-top:2px}
+.status.available{background:#EAF3FF;color:#2547D8}
+.status.taken{background:#FFF0EE;color:#B9382B}
+.empty{border-color:#C8D8EE;background:rgba(255,255,255,.78);border-radius:19px}
+.form-card,.admin-card{border-color:#DFE7F2;border-radius:23px;box-shadow:0 20px 55px rgba(11,18,32,.065)}
+.form-group label{color:#24324A}
+.upload{background:#F8FAFE;border-color:#B9C9E0}
+.upload:focus-within{border-color:#55D6F5;background:#F2FBFF}
+.preview img{border-color:#DFE7F2;box-shadow:0 8px 25px rgba(11,18,32,.1)}
+.admin-table th{color:#64748B}
+.admin-table th,.admin-table td{border-bottom-color:#E8EDF5}
+.admin-table tbody tr:hover{background:#F8FAFE}
+.admin-thumb{background:#EAF3FF}
+.modal{background:rgba(5,12,25,.68);backdrop-filter:blur(5px)}
+.modal-panel{border:1px solid rgba(255,255,255,.7);box-shadow:0 30px 90px rgba(0,0,0,.28)}
+.close{background:#F0F4FA;color:#34435D}
+.close:hover{background:#E3EBF8}
+.toast{background:#0B1220;border:1px solid rgba(85,214,245,.25);box-shadow:0 18px 40px rgba(11,18,32,.25)}
+footer{color:#77849A}
+
+@media(max-width:980px){
+  .hero{padding:54px 0 48px}
+  .hero-grid{grid-template-columns:1fr;gap:24px}
+  .hero-card{min-height:unset}
+  .mini-stack{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .mini-item{align-items:flex-start}
+  .mini-item>span{display:none}
+  .book-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .wrap{width:calc(100% - 28px)}
+  .topbar-inner{justify-content:center;gap:8px;padding:10px 0}
+  .brand{margin-right:auto}
+  .nav{width:100%;justify-content:flex-start;overflow:visible;gap:6px}
+  .nav button{padding:9px 11px;font-size:.88rem}
+  .hero{padding:42px 0 40px}
+  .hero-grid{gap:22px}
+  .hero h1{font-size:clamp(2.7rem,10.5vw,4.2rem);line-height:.98;letter-spacing:-.075em}
+  .hero p{font-size:1rem}
+  .hero-card{padding:19px;border-radius:23px}
+  .mini-stack{grid-template-columns:1fr;gap:9px}
+  .mini-item{align-items:center}
+  .mini-item>span{display:grid}
+  .section{padding:26px 0 48px}
+  .section-head{align-items:flex-start;flex-direction:column;gap:12px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+  .stat{padding:15px 12px;border-radius:16px}
+  .stat strong{font-size:1.75rem}
+  .stat small{font-size:.76rem}
+  .toolbar{grid-template-columns:repeat(2,minmax(0,1fr));padding:10px}
+  .toolbar .search{grid-column:1/-1}
+  .book-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .book-body{padding:12px;gap:10px}
+  .book-foot{align-items:stretch;flex-direction:column}
+  .book-foot>div:last-child{display:grid!important;grid-template-columns:1fr 1fr}
+  .book-foot .btn{padding:10px 8px;font-size:.84rem;text-align:center;white-space:normal}
+  .form-card,.admin-card{padding:18px}
+  .admin-head{align-items:flex-start;flex-direction:column}
+  .admin-table{table-layout:fixed;width:100%;font-size:.82rem}
+  .admin-table th,.admin-table td{padding:10px 5px;overflow-wrap:anywhere}
+}
+@media(max-width:480px){
+  .wrap{width:calc(100% - 22px)}
+  .brand-mark{width:38px;height:38px;border-radius:13px}
+  .brand-title{font-size:1rem}
+  .brand-sub{font-size:.7rem}
+  .nav button{font-size:.82rem;padding:8px 10px}
+  .hero h1{font-size:clamp(2.5rem,11.3vw,3.35rem);overflow-wrap:anywhere}
+  .hero .actions{display:grid;grid-template-columns:1fr}
+  .hero .actions .btn{width:100%}
+  .stats{grid-template-columns:1fr}
+  .stat:last-child{grid-column:auto}
+  .stat{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px}
+  .stat strong{margin:0;font-size:1.55rem}
+  .toolbar{grid-template-columns:1fr}
+  .toolbar .search{grid-column:auto}
+  .book-grid{grid-template-columns:minmax(0,1fr)}
+  .book{display:grid;grid-template-columns:minmax(105px,38%) minmax(0,1fr);align-items:stretch}
+  .cover{aspect-ratio:4/5;min-height:170px}
+  .book-body{padding:13px;min-width:0}
+  .book-title{overflow-wrap:anywhere;font-size:.98rem}
+  .meta{gap:5px}
+  .meta span{font-size:.7rem;padding:5px 6px;overflow-wrap:anywhere}
+  .book-foot{align-items:stretch}
+  .book-foot>div:last-child{grid-template-columns:1fr!important}
+  .book-foot .btn{width:100%}
+  .book .tagrow{left:7px;top:7px;right:7px;gap:4px}
+  .book .tag{font-size:.61rem;padding:5px 6px}
+  .admin-table th:nth-child(2),.admin-table td:nth-child(2),
+  .admin-table th:nth-child(4),.admin-table td:nth-child(4){display:none}
+  .table-wrap{overflow:hidden!important;max-width:100%}
+  .admin-table{font-size:.74rem}
+  .admin-table th:last-child,.admin-table td:last-child{width:34%}
+  .admin-table .btn{font-size:.7rem;padding:8px 6px;width:100%;white-space:normal}
+  .modal{padding:10px}
+  .modal-panel{padding:17px;border-radius:20px;max-height:90vh;overflow-y:auto}
+  #detail-content>div>div{grid-template-columns:100px minmax(0,1fr)!important;gap:12px!important}
+  #detail-content img{width:100px!important;height:130px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+</style>
+<meta name="description" content="Mercatino libri scolastici Pro Omnibus: cerca, pubblica e scambia libri tra studenti.">
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar-inner">
+    <a href="#" class="brand" onclick="showView('catalog');return false">
+      <span class="brand-mark">PO</span>
+      <span>
+        <span class="brand-title">Pro Omnibus</span>
+        <span class="brand-sub">Mercatino libri scolastici</span>
+      </span>
+    </a>
+
+    <nav class="nav">
+      <button id="nav-catalog" class="active" onclick="showView('catalog')">Catalogo</button>
+      <button onclick="showView('add')">Pubblica libro</button>
+      <button type="button" onclick="window.location.href='index.html'">Sito Pro Omnibus ↗</button>
+      <button id="nav-admin" class="admin-link" onclick="showView('admin')">Admin</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<section id="view-catalog" class="view active">
+
+  <div class="hero">
+    <div class="wrap hero-grid">
+
+      <div>
+        <span class="eyebrow">✦ PRO OMNIBUS · SCAMBIO TRA STUDENTI</span>
+
+        <h1>
+          Trova il libro.<br>
+          <span>Trova chi ce l'ha.</span>
+        </h1>
+
+        <p>
+          Un catalogo semplice per vedere quali libri sono disponibili nella tua scuola.
+          Nessun pagamento sul sito: quando trovi quello che cerchi, contatta direttamente
+          lo studente su WhatsApp.
+        </p>
+
+        <div class="actions">
+          <button class="btn btn-primary"
+                  onclick="document.getElementById('catalog-anchor').scrollIntoView({behavior:'smooth'})">
+            Cerca libri
+          </button>
+
+          <button class="btn btn-secondary" onclick="showView('add')">
+            Pubblica un libro
+          </button>
+        </div>
+      </div>
+
+      <aside class="hero-card">
+        <div class="hero-card-top">
+          <strong>Il mercatino, senza complicazioni.</strong>
+          <span class="pill">100% locale</span>
+        </div>
+
+        <div class="mini-stack">
+          <div class="mini-item">
+            <div>
+              <small>Annunci</small>
+              <strong id="hero-books">0</strong>
+            </div>
+            <span>📚</span>
+          </div>
+
+          <div class="mini-item">
+            <div>
+              <small>Classi presenti</small>
+              <strong id="hero-classes">0</strong>
+            </div>
+            <span>🏫</span>
+          </div>
+
+          <div class="mini-item">
+            <div>
+              <small>Studenti presenti</small>
+              <strong id="hero-sellers">0</strong>
+            </div>
+            <span>👥</span>
+          </div>
+        </div>
+
+        <div class="small">
+          Demo locale: gli annunci restano nel browser di questo dispositivo e non sono condivisi tra studenti.
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <section id="catalog-anchor" class="section">
+    <div class="wrap">
+
+      <div class="section-head">
+        <div>
+          <h2>Catalogo</h2>
+          <p>
+            Cerca un titolo oppure filtra per classe, materia e condizioni.
+          </p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="clearFilters()">
+          Azzera filtri
+        </button>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <small>Libri online</small>
+          <strong id="stat-books">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Classi coinvolte</small>
+          <strong id="stat-classes">0</strong>
+        </div>
+
+        <div class="stat">
+          <small>Studenti presenti</small>
+          <strong id="stat-sellers">0</strong>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input
+          id="search"
+          class="field search"
+          type="search"
+          placeholder="Cerca per titolo, editore o materia…"
+          oninput="renderBooks()"
+        >
+
+        <select id="filter-class" class="field" onchange="renderBooks()">
+          <option value="">Tutte le classi</option>
+        </select>
+
+        <select id="filter-subject" class="field" onchange="renderBooks()">
+          <option value="">Tutte le materie</option>
+        </select>
+
+        <select id="filter-condition" class="field" onchange="renderBooks()">
+          <option value="">Tutte le condizioni</option>
+          <option>Ottime</option>
+          <option>Buone</option>
+          <option>Discrete</option>
+        </select>
+      </div>
+
+      <div id="books-grid" class="book-grid"></div>
+
+      <div id="empty" class="empty hidden">
+        Nessun libro corrisponde ai filtri. Prova a cambiare la ricerca.
+      </div>
+
+    </div>
+  </section>
+
+</section>
+
+<section id="view-add" class="view">
+
+  <div class="wrap section">
+    <div class="form-card">
+
+      <div class="section-head">
+        <div>
+          <h2>Pubblica un libro</h2>
+          <p>
+            Inserisci le informazioni che servono agli altri studenti
+            per riconoscerlo e contattarti.
+          </p>
+        </div>
+      </div>
+
+      <form id="book-form" onsubmit="saveBook(event)">
+
+        <div class="form-grid">
+
+          <div class="form-group full">
+            <label for="title">Titolo del libro *</label>
+            <input
+              id="title"
+              class="field"
+              required
+              placeholder="Es. Matematica Blu 2.0"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Materia *</label>
+            <select id="subject" class="field" required>
+              <option value="">Seleziona</option>
+              <option>Italiano</option>
+              <option>Matematica</option>
+              <option>Storia</option>
+              <option>Geografia</option>
+              <option>Inglese</option>
+              <option>Fisica</option>
+              <option>Chimica</option>
+              <option>Biologia</option>
+              <option>Filosofia</option>
+              <option>Arte</option>
+              <option>Altro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="publisher">Casa editrice</label>
+            <input
+              id="publisher"
+              class="field"
+              placeholder="Es. Zanichelli"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="classLevel">Classe *</label>
+            <select id="classLevel" class="field" required></select>
+          </div>
+
+          <div class="form-group">
+            <label for="condition">Condizioni *</label>
+            <select id="condition" class="field" required>
+              <option value="">Seleziona</option>
+              <option>Ottime</option>
+              <option>Buone</option>
+              <option>Discrete</option>
+            </select>
+          </div>
+
+          <div class="form-group full">
+            <label for="notes">Note</label>
+            <textarea
+              id="notes"
+              class="field textarea"
+              placeholder="Edizione, sottolineature, eventuali difetti…"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="sellerName">Nome / nickname *</label>
+            <input
+              id="sellerName"
+              class="field"
+              required
+              placeholder="Es. Luca"
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Numero WhatsApp *</label>
+            <input
+              id="phone"
+              class="field"
+              required
+              inputmode="tel"
+              pattern="[0-9 +()-]{8,20}"
+              placeholder="3331234567"
+            >
+          </div>
+
+          <div class="form-group full">
+            <label>Foto del libro</label>
+
+            <div class="upload">
+              <input
+                id="image"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+              >
+
+              <div id="preview" class="preview">
+                <img id="previewImg" alt="Anteprima libro">
+              </div>
+
+              <div class="small">
+                La foto viene ridimensionata e compressa nel browser.
+                Non viene caricata su servizi esterni.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <div
+              class="small"
+              style="line-height:1.6;background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px 14px"
+            >
+              📌 <b>Importante:</b>
+              contattare il venditore su WhatsApp non rimuove l'annuncio.
+              Quando il libro è stato preso, verrà segnato come
+              <b>Preso</b> e scomparirà dal catalogo.
+            </div>
+          </div>
+
+        </div>
+
+        <div class="actions" style="margin-top:18px">
+          <button class="btn btn-primary" type="submit">
+            Pubblica annuncio
+          </button>
+
+          <button
+            class="btn btn-secondary"
+            type="button"
+            onclick="showView('catalog')"
+          >
+            Annulla
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+</section>
+
+<section id="view-admin" class="view">
+
+  <div class="wrap section">
+
+    <div id="admin-login" class="admin-login form-card">
+
+      <h2>Accesso amministratore</h2>
+
+      <p class="small">
+        Questa demo è locale: annunci e accesso admin valgono solo su questo dispositivo. Non usare queste credenziali come protezione per una versione pubblica.
+      </p>
+
+      <form onsubmit="adminLogin(event)">
+
+        <div class="form-group">
+          <label>Email</label>
+          <input
+            id="admin-email"
+            class="field"
+            type="email"
+            required
+          >
+        </div>
+
+        <div
+          class="form-group"
+          style="margin-top:12px"
+        >
+          <label>Password</label>
+          <input
+            id="admin-password"
+            class="field"
+            type="password"
+            required
+          >
+        </div>
+
+        <div class="actions" style="margin-top:16px">
+          <button class="btn btn-primary">
+            Accedi
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+
+    <div id="admin-panel" class="admin-card hidden">
+
+      <div class="admin-head">
+
+        <div>
+          <h2 style="margin:0">Pannello amministratore</h2>
+
+          <div class="small">
+            Quando un libro viene preso,
+            segnalo come <b>Preso</b>:
+            sparirà automaticamente dal catalogo.
+          </div>
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="btn btn-secondary"
+            onclick="exportData()"
+          >
+            Esporta dati
+          </button>
+
+          <button
+            class="btn btn-danger"
+            onclick="adminLogout()"
+          >
+            Esci
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="table-wrap" style="overflow:auto">
+
+        <table class="admin-table">
+
+          <thead>
+            <tr>
+              <th>Libro</th>
+              <th>Classe</th>
+              <th>Venditore</th>
+              <th>Stato</th>
+              <th>Data</th>
+              <th>Azioni</th>
+            </tr>
+          </thead>
+
+          <tbody id="admin-body"></tbody>
+
+        </table>
+
+      </div>
+
+      <div
+        id="admin-empty"
+        class="empty hidden"
+        style="margin-top:14px"
+      >
+        Nessun annuncio presente.
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    © <span id="year"></span>
+    Pro Omnibus · Mercatino scolastico.
+    Nessun pagamento avviene sul sito.
+  </div>
+</footer>
+
+<div id="detail-modal" class="modal">
+
+  <div class="modal-panel">
+
+    <div
+      style="display:flex;justify-content:space-between;gap:10px;align-items:start"
+    >
+      <div>
+        <div class="small">Dettagli annuncio</div>
+        <h3 id="detail-title"></h3>
+      </div>
+
+      <button class="close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div id="detail-content"></div>
+
+  </div>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+'use strict';
+
+// I dati degli annunci sono salvati su MySQL tramite api/books.php,
+// così il catalogo è condiviso da tutti i visitatori del sito.
+const SESSION_KEY = 'pro_omnibus_admin_session_v2';
+let books = [];
+let isAdmin = false;
+let imageData = '';
+const $ = id => document.getElementById(id);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+async function apiRequest(url, options = {}) {
+  const opts = { ...options };
+  opts.headers = { ...(opts.headers || {}) };
+  if (opts.body && typeof opts.body !== 'string') {
+    opts.body = JSON.stringify(opts.body);
+    opts.headers['Content-Type'] = 'application/json';
+  }
+  const response = await fetch(url, opts);
+  let result = null;
+  try { result = await response.json(); } catch (_) { result = null; }
+  if (!response.ok) {
+    throw new Error(result && result.error ? result.error : 'Si è verificato un errore. Riprova.');
+  }
+  return result;
+}
+
+async function checkAdmin() {
+  try {
+    const result = await apiRequest('api/admin.php');
+    isAdmin = !!result.authenticated;
+    sessionStorage.setItem(SESSION_KEY, isAdmin ? '1' : '0');
+  } catch (_) {
+    isAdmin = false;
+  }
+}
+
+async function refreshBooks(showError = true) {
+  try {
+    const result = await apiRequest('api/books.php');
+    books = Array.isArray(result) ? result : [];
+  } catch (error) {
+    books = [];
+    if (showError) showToast(error.message || 'Impossibile caricare il catalogo.');
+  }
+  renderAll();
+}
+
+function esc(s = '') {
+  return String(s).replace(/[&<>'"]/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;'
+  }[c]));
+}
+
+function formatDate(d) {
+  try {
+    return new Intl.DateTimeFormat('it-IT', { day:'2-digit', month:'short', year:'numeric' }).format(new Date(d));
+  } catch (_) { return ''; }
+}
+
+function waUrl(phone, title) {
+  const digits = String(phone || '').replace(/[^0-9]/g, '');
+  const normalized = digits.startsWith('39') ? digits : '39' + digits;
+  const msg = `Ciao, ho trovato su Pro Omnibus il libro "${title}" e vorrei avere maggiori informazioni.`;
+  return `https://wa.me/${normalized}?text=${encodeURIComponent(msg)}`;
+}
+
+function showToast(msg) {
+  const t = $('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__toast);
+  window.__toast = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const view = $('view-' + name);
+  if (view) view.classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  if (name === 'catalog') $('nav-catalog').classList.add('active');
+  if (name === 'admin') {
+    $('nav-admin').classList.add('active');
+    renderAdminAuth();
+  }
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function populateClasses() {
+  const opts = [];
+  for (let n = 1; n <= 5; n++) for (const suffix of ['A','B','C','D']) opts.push(`${n}${suffix}`);
+  $('classLevel').innerHTML = '<option value="">Seleziona</option>' + opts.map(x => `<option>${x}</option>`).join('');
+  $('filter-class').innerHTML = '<option value="">Tutte le classi</option>' + opts.map(x => `<option>${x}</option>`).join('');
+}
+
+function renderFilters() {
+  const previous = $('filter-subject').value;
+  const subjects = [...new Set(books.map(b => b.subject).filter(Boolean))].sort((a,b) => a.localeCompare(b,'it'));
+  $('filter-subject').innerHTML = '<option value="">Tutte le materie</option>' + subjects.map(x => `<option>${esc(x)}</option>`).join('');
+  if (subjects.includes(previous)) $('filter-subject').value = previous;
+}
+
+function activeBooks() { return books.filter(b => b.status !== 'taken'); }
+
+function renderStats() {
+  const active = activeBooks();
+  const classes = new Set(active.map(b => b.classLevel).filter(Boolean));
+  const sellers = new Set(active.map(b => b.sellerName).filter(Boolean));
+  ['stat-books','hero-books'].forEach(i => $(i).textContent = active.length);
+  ['stat-classes','hero-classes'].forEach(i => $(i).textContent = classes.size);
+  ['stat-sellers','hero-sellers'].forEach(i => $(i).textContent = sellers.size);
+}
+
+function renderBooks() {
+  const q = $('search').value.trim().toLowerCase();
+  const cl = $('filter-class').value;
+  const sub = $('filter-subject').value;
+  const cond = $('filter-condition').value;
+  const filtered = activeBooks().filter(b => {
+    const text = [b.title, b.publisher, b.subject, b.sellerName].join(' ').toLowerCase();
+    return (!q || text.includes(q)) && (!cl || b.classLevel === cl) && (!sub || b.subject === sub) && (!cond || b.condition === cond);
+  });
+  $('books-grid').innerHTML = filtered.map(bookCard).join('');
+  $('empty').classList.toggle('hidden', filtered.length !== 0);
+}
+
+function bookCard(b) {
+  const cover = b.imageData
+    ? `<img src="${b.imageData}" alt="Copertina di ${esc(b.title)}">`
+    : `<div class="cover-fallback"><b>📚</b><span>Nessuna foto</span></div>`;
+  return `
+    <article class="book">
+      <div class="cover">${cover}<div class="tagrow"><span class="tag">${esc(b.classLevel)}</span><span class="tag light">${esc(b.condition)}</span></div></div>
+      <div class="book-body">
+        <h3 class="book-title">${esc(b.title)}</h3>
+        <div class="meta"><span>${esc(b.subject)}</span>${b.publisher ? `<span>${esc(b.publisher)}</span>` : ''}</div>
+        ${b.notes ? `<div class="small" style="line-height:1.5">${esc(b.notes)}</div>` : ''}
+        <div class="book-foot">
+          <div class="seller"><span>Inserito da</span><b>${esc(b.sellerName)}</b></div>
+          <div style="display:flex;gap:7px">
+            <button class="btn btn-secondary" onclick="openDetails('${b.id}')">Dettagli</button>
+            <a class="btn btn-green" href="${waUrl(b.phone,b.title)}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </article>`;
+}
+
+function openDetails(id) {
+  const b = books.find(x => x.id === id);
+  if (!b) return;
+  $('detail-title').textContent = b.title;
+  $('detail-content').innerHTML = `
+    <div style="display:grid;gap:14px">
+      <div style="display:grid;grid-template-columns:140px minmax(0,1fr);gap:16px;align-items:start">
+        ${b.imageData ? `<img src="${b.imageData}" style="width:140px;height:175px;object-fit:cover;border-radius:16px;border:1px solid var(--line)" alt="Copertina del libro">` : `<div class="cover-fallback" style="border-radius:16px;border:1px solid var(--line)"><b>📚</b><span>Nessuna foto</span></div>`}
+        <div>
+          <div class="meta"><span>${esc(b.subject)}</span><span>${esc(b.classLevel)}</span><span>${esc(b.condition)}</span></div>
+          ${b.publisher ? `<p><b>Editore:</b> ${esc(b.publisher)}</p>` : ''}
+          <p><b>Venditore:</b> ${esc(b.sellerName)}</p>
+          <p><b>Inserito:</b> ${formatDate(b.createdAt)}</p>
+          ${b.notes ? `<p><b>Note:</b><br>${esc(b.notes)}</p>` : ''}
+        </div>
+      </div>
+      <a class="btn btn-green" href="${waUrl(b.phone,b.title)}" target="_blank" rel="noopener noreferrer">Contatta ${esc(b.sellerName)} su WhatsApp</a>
+    </div>`;
+  $('detail-modal').classList.add('open');
+}
+
+function closeModal() { $('detail-modal').classList.remove('open'); }
+function clearFilters() {
+  $('search').value = '';
+  $('filter-class').value = '';
+  $('filter-subject').value = '';
+  $('filter-condition').value = '';
+  renderBooks();
+}
+
+function compressImage(file) {
+  return new Promise((resolve, reject) => {
+    if (!file) return resolve('');
+    if (!/^image\/(png|jpe?g|webp)$/i.test(file.type)) return reject(new Error('Formato non supportato. Usa JPG, PNG o WEBP.'));
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const max = 900;
+        const scale = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.width * scale));
+        c.height = Math.max(1, Math.round(img.height * scale));
+        const ctx = c.getContext('2d');
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        let q = .82;
+        let data = c.toDataURL('image/jpeg', q);
+        while (data.length > 700000 && q > .45) {
+          q -= .07;
+          data = c.toDataURL('image/jpeg', q);
+        }
+        if (data.length > 900000) return reject(new Error('Immagine ancora troppo grande. Scegli una foto più leggera.'));
+        resolve(data);
+      };
+      img.onerror = () => reject(new Error('Impossibile leggere l’immagine.'));
+      img.src = r.result;
+    };
+    r.onerror = () => reject(new Error('Errore durante la lettura del file.'));
+    r.readAsDataURL(file);
+  });
+}
+
+$('image').addEventListener('change', async e => {
+  const file = e.target.files && e.target.files[0];
+  if (!file) { imageData = ''; $('preview').style.display = 'none'; return; }
+  try {
+    imageData = await compressImage(file);
+    $('previewImg').src = imageData;
+    $('preview').style.display = 'block';
+    showToast('Foto pronta');
+  } catch (err) {
+    imageData = '';
+    $('preview').style.display = 'none';
+    $('image').value = '';
+    showToast(err.message);
+  }
+});
+
+async function saveBook(e) {
+  e.preventDefault();
+  const book = {
+    id: uid(),
+    title: $('title').value.trim(),
+    subject: $('subject').value,
+    publisher: $('publisher').value.trim(),
+    classLevel: $('classLevel').value,
+    condition: $('condition').value,
+    notes: $('notes').value.trim(),
+    sellerName: $('sellerName').value.trim(),
+    phone: $('phone').value.trim(),
+    imageData
+  };
+  if (!book.title || !book.subject || !book.classLevel || !book.condition || !book.sellerName || !book.phone) {
+    showToast('Compila i campi obbligatori');
+    return;
+  }
+  const submit = $('book-form').querySelector('button[type="submit"]');
+  const original = submit.textContent;
+  submit.disabled = true;
+  submit.textContent = 'Pubblicazione in corso…';
+  try {
+    await apiRequest('api/books.php', { method:'POST', body:book });
+    $('book-form').reset();
+    imageData = '';
+    $('preview').style.display = 'none';
+    await refreshBooks(false);
+    showToast('Annuncio pubblicato e visibile nel catalogo');
+    showView('catalog');
+  } catch (error) {
+    showToast(error.message || 'Non è stato possibile pubblicare il libro.');
+  } finally {
+    submit.disabled = false;
+    submit.textContent = original;
+  }
+}
+
+function renderAdminAuth() {
+  $('nav-admin').classList.add('show');
+  $('admin-login').classList.toggle('hidden', isAdmin);
+  $('admin-panel').classList.toggle('hidden', !isAdmin);
+  if (isAdmin) renderAdmin();
+}
+
+async function adminLogin(e) {
+  e.preventDefault();
+  const email = $('admin-email').value.trim();
+  const password = $('admin-password').value;
+  try {
+    await apiRequest('api/admin.php', { method:'POST', body:{ action:'login', email, password } });
+    isAdmin = true;
+    sessionStorage.setItem(SESSION_KEY, '1');
+    $('admin-password').value = '';
+    await refreshBooks(false);
+    renderAdminAuth();
+    showToast('Accesso amministratore riuscito');
+  } catch (error) {
+    showToast(error.message || 'Accesso non riuscito.');
+  }
+}
+
+async function adminLogout() {
+  try { await apiRequest('api/admin.php', { method:'POST', body:{ action:'logout' } }); } catch (_) {}
+  isAdmin = false;
+  sessionStorage.removeItem(SESSION_KEY);
+  await refreshBooks(false);
+  renderAdminAuth();
+  showToast('Logout effettuato');
+}
+
+function renderAdmin() {
+  if (!isAdmin) return;
+  $('admin-body').innerHTML = books.map(b => {
+    const taken = b.status === 'taken';
+    return `<tr>
+      <td><div style="display:flex;gap:10px;align-items:center">${b.imageData ? `<img class="admin-thumb" src="${b.imageData}" alt="">` : '<div class="admin-thumb"></div>'}<div><b>${esc(b.title)}</b><div class="small">${esc(b.subject)}</div></div></div></td>
+      <td>${esc(b.classLevel)}</td><td>${esc(b.sellerName)}</td>
+      <td>${taken ? '<span class="status taken">✓ Preso</span>' : '<span class="status available">● Disponibile</span>'}</td>
+      <td>${formatDate(taken && b.takenAt ? b.takenAt : b.createdAt)}</td>
+      <td>${taken ? `<button class="btn btn-secondary" onclick="restoreBook('${b.id}')">Riattiva</button>` : `<button class="btn btn-taken" onclick="markBookTaken('${b.id}')">Segna come preso</button>`}</td>
+    </tr>`;
+  }).join('');
+  $('admin-empty').classList.toggle('hidden', books.length !== 0);
+}
+
+async function setBookStatus(id, status) {
+  if (!isAdmin) { showToast('Accesso negato'); return; }
+  const b = books.find(x => x.id === id);
+  if (!b) return;
+  if (status === 'taken' && !confirm(`Confermi che "${b.title}" è stato preso?\n\nL'annuncio verrà tolto dal catalogo ma resterà nello storico amministratore.`)) return;
+  try {
+    await apiRequest('api/books.php', { method:'PATCH', body:{ id, status } });
+    await refreshBooks(false);
+    showToast(status === 'taken' ? 'Libro segnato come preso' : 'Annuncio riattivato');
+  } catch (error) {
+    showToast(error.message || 'Non è stato possibile aggiornare l’annuncio.');
+  }
+}
+function markBookTaken(id) { return setBookStatus(id, 'taken'); }
+function restoreBook(id) { return setBookStatus(id, 'available'); }
+
+function exportData() {
+  if (!isAdmin) return;
+  const blob = new Blob([JSON.stringify({ version:2, exportedAt:new Date().toISOString(), books }, null, 2)], { type:'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'pro-omnibus-backup.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  showToast('Backup esportato');
+}
+
+function renderAll() { renderFilters(); renderStats(); renderBooks(); renderAdmin(); }
+
+$('year').textContent = new Date().getFullYear();
+populateClasses();
+
+async function initMercatino() {
+  await checkAdmin();
+  await refreshBooks(false);
+  renderAdminAuth();
+}
+initMercatino();
+
+window.showView = showView;
+window.renderBooks = renderBooks;
+window.clearFilters = clearFilters;
+window.saveBook = saveBook;
+window.adminLogin = adminLogin;
+window.adminLogout = adminLogout;
+window.markBookTaken = markBookTaken;
+window.restoreBook = restoreBook;
+window.exportData = exportData;
+window.openDetails = openDetails;
+window.closeModal = closeModal;
+</script>
+
+</body>
+</html>
+
+
+
+<!-- PROGRAMMATO DA JAMES CLIFFOR LEWIS - 10/09/2026 -->  

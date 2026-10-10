@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B1220">
+  <meta name="description" content="Pro Omnibus — ascoltare tutti per spingersi più in alto. Scopri il programma e condividi le tue idee per la scuola.">
+  <title>Pro Omnibus — La scuola che costruiamo insieme</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0B1220;
+      --navy-2: #101B30;
+      --navy-3: #172642;
+      --blue: #315BFF;
+      --blue-2: #2447D8;
+      --cyan: #55D6F5;
+      --paper: #F4F7FC;
+      --white: #FFFFFF;
+      --ink: #111B2D;
+      --muted: #63718A;
+      --line: #DCE4F0;
+      --coral: #FF786B;
+      --radius: 22px;
+      --shadow: 0 20px 55px rgba(11, 18, 32, .09);
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 88px; overflow-x: hidden; }
+    body { margin: 0; width: 100%; max-width: 100%; overflow-x: hidden; background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    ::selection { background: rgba(85, 214, 245, .36); color: var(--navy); }
+    .progress-track { position: fixed; inset: 0 0 auto; z-index: 1000; height: 3px; background: transparent; pointer-events: none; }
+    .progress-value { height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), var(--cyan)); transform-origin: left; }
+    .container { width: min(var(--max), calc(100% - 48px)); margin-inline: auto; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--blue); font-size: 11px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+    .eyebrow::before { content: ''; width: 24px; height: 2px; border-radius: 10px; background: currentColor; }
+    .section-heading { max-width: 730px; margin-bottom: 42px; }
+    .section-heading h2 { margin: 14px 0 14px; font: 800 clamp(34px, 5vw, 54px)/1.06 'Manrope', sans-serif; letter-spacing: -.055em; color: var(--navy); }
+    .section-heading p { max-width: 600px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.75; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 52px; padding: 0 21px; border: 1px solid transparent; border-radius: 14px; font-weight: 800; font-size: 14px; transition: transform .22s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease; cursor: pointer; }
+    .btn:hover { transform: translateY(-3px); }
+    .btn:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 3px solid rgba(85, 214, 245, .9); outline-offset: 3px; }
+    .btn-primary { background: var(--blue); color: var(--white); box-shadow: 0 12px 25px rgba(49, 91, 255, .26); }
+    .btn-primary:hover { background: var(--blue-2); box-shadow: 0 16px 32px rgba(49, 91, 255, .34); }
+    .btn-ghost { color: var(--white); border-color: rgba(255,255,255,.22); background: rgba(255,255,255,.045); }
+    .btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(85,214,245,.6); }
+    .icon { width: 19px; height: 19px; flex: 0 0 auto; }
+
+    /* Navigation */
+    .site-nav { position: fixed; z-index: 100; top: 0; left: 0; right: 0; color: var(--white); border-bottom: 1px solid rgba(255,255,255,.085); background: rgba(11,18,32,.82); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); }
+    .nav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 11px; font: 800 17px/1 'Manrope', sans-serif; letter-spacing: -.045em; white-space: nowrap; }
+    .brand-mark { width: 39px; height: 39px; display: grid; place-items: center; position: relative; overflow: hidden; border-radius: 13px; color: var(--white); background: linear-gradient(140deg, #315BFF 0%, #2447D8 56%, #55D6F5 150%); box-shadow: 0 7px 20px rgba(49,91,255,.28); font: 800 12px/1 'Manrope', sans-serif; letter-spacing: -.08em; }
+    .brand-mark::after { content: ''; position: absolute; right: -7px; bottom: -9px; width: 25px; height: 25px; border: 2px solid rgba(255,255,255,.65); border-radius: 50%; }
+    .brand-name span { color: var(--cyan); }
+    .nav-links { display: flex; align-items: center; gap: clamp(18px, 3vw, 36px); color: #C0CBDF; font-size: 13px; font-weight: 700; }
+    .nav-links a { transition: color .2s ease; }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-cta { min-height: 43px; padding-inline: 17px; font-size: 12px; border-radius: 12px; }
+    .menu-toggle { display: none; width: 44px; height: 44px; border: 1px solid rgba(255,255,255,.2); background: transparent; color: white; border-radius: 12px; cursor: pointer; }
+
+    /* Hero */
+    .hero { position: relative; isolation: isolate; overflow: hidden; min-height: 720px; padding: 150px 0 120px; color: var(--white); background: radial-gradient(ellipse at 75% 45%, rgba(49,91,255,.18), transparent 42%), radial-gradient(ellipse at 97% 8%, rgba(85,214,245,.13), transparent 28%), linear-gradient(132deg, #0B1220 0%, #101B30 64%, #0B1220 100%); }
+    .hero::before { content: ''; position: absolute; z-index: -1; inset: 0; opacity: .17; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,.09) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.09) 1px, transparent 1px); background-size: 56px 56px; mask-image: linear-gradient(90deg, transparent 3%, black 100%); }
+    .hero::after { content: ''; position: absolute; z-index: -1; left: -8%; right: -8%; bottom: -100px; height: 155px; background: var(--paper); border-radius: 50% 50% 0 0 / 25% 25% 0 0; transform: rotate(-1.5deg); }
+    .hero-inner { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); align-items: center; gap: clamp(30px, 5vw, 74px); }
+    .hero-copy { position: relative; z-index: 2; min-width: 0; }
+    .hero-kicker { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 27px; padding: 9px 13px; border: 1px solid rgba(85,214,245,.25); border-radius: 99px; background: rgba(85,214,245,.075); color: #A7EEFF; text-transform: uppercase; font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+    .kicker-dot { width: 7px; height: 7px; background: var(--coral); border-radius: 50%; box-shadow: 0 0 0 5px rgba(255,120,107,.12); }
+    h1 { max-width: 730px; margin: 0; font: 800 clamp(48px, 6.5vw, 82px)/.99 'Manrope', sans-serif; letter-spacing: -.075em; }
+    h1 .highlight { position: relative; display: inline-block; color: var(--cyan); white-space: nowrap; }
+    h1 .highlight::after { content: ''; position: absolute; left: 3px; right: 3px; bottom: -6px; height: 5px; background: var(--blue); border-radius: 10px; transform: scaleX(.94) rotate(-1.5deg); transform-origin: left; }
+    .hero-lead { max-width: 500px; margin: 28px 0 0; color: #B9C5DA; font-size: clamp(16px, 1.5vw, 18px); line-height: 1.8; }
+    .hero-lead strong { color: #F5F8FF; font-weight: 700; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .hero-footnote { display: flex; align-items: center; gap: 12px; margin-top: 34px; color: #8191AB; font-size: 11px; font-weight: 700; letter-spacing: .04em; }
+    .footnote-rule { width: 32px; height: 1px; background: #52637E; }
+    .hero-art { position: relative; min-width: 0; min-height: 440px; display: grid; place-items: center; }
+    .orbit { position: absolute; width: min(100%, 440px); aspect-ratio: 1; border: 1px solid rgba(146,176,255,.23); border-radius: 50%; transform: rotate(-20deg) scaleY(.78); }
+    .orbit::before, .orbit::after { content: ''; position: absolute; inset: 12%; border: 1px solid rgba(85,214,245,.18); border-radius: 50%; }
+    .orbit::after { inset: 25%; border-color: rgba(146,176,255,.16); }
+    .orbit-2 { width: min(91%, 395px); transform: rotate(52deg) scaleY(.8); border-color: rgba(85,214,245,.2); }
+    .orbit-2::before { inset: 4%; border-color: rgba(49,91,255,.4); }
+    .art-glow { position: absolute; width: min(74%, 320px); aspect-ratio: 1; border-radius: 50%; background: rgba(49,91,255,.27); filter: blur(57px); }
+    .monogram { position: relative; z-index: 1; width: min(76%, 320px); aspect-ratio: 1; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.2); border-radius: 38% 62% 53% 47% / 42% 40% 60% 58%; background: linear-gradient(145deg, rgba(49,91,255,.9), rgba(16,27,48,.78) 60%, rgba(85,214,245,.2)); box-shadow: inset 0 1px 0 rgba(255,255,255,.24), 0 35px 90px rgba(0,0,0,.25); transform: rotate(-8deg); animation: float 7s ease-in-out infinite; }
+    .monogram::before { content: ''; position: absolute; inset: 12px; border: 1px solid rgba(255,255,255,.2); border-radius: inherit; }
+    .monogram-text { color: #fff; font: 800 clamp(70px, 8vw, 112px)/1 'Manrope', sans-serif; letter-spacing: -.12em; transform: rotate(8deg) translateX(-5px); text-shadow: 0 12px 36px rgba(4,10,28,.3); }
+    .monogram-text span { color: var(--cyan); }
+    .orbit-point { position: absolute; z-index: 2; width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 0 8px rgba(85,214,245,.1), 0 0 23px rgba(85,214,245,.75); }
+    .point-one { top: 15%; right: 20%; }
+    .point-two { bottom: 19%; left: 14%; width: 7px; height: 7px; background: var(--coral); box-shadow: 0 0 0 7px rgba(255,120,107,.1); }
+    .float-card { position: absolute; z-index: 3; display: flex; align-items: center; gap: 11px; padding: 13px 15px; border: 1px solid rgba(255,255,255,.13); border-radius: 16px; background: rgba(13,24,44,.83); box-shadow: 0 18px 42px rgba(0,0,0,.2); backdrop-filter: blur(14px); }
+    .float-card strong { display: block; color: white; font: 800 12px/1.3 'Manrope', sans-serif; letter-spacing: .02em; }
+    .float-card small { display: block; margin-top: 3px; color: #A9B6CA; font-size: 10px; }
+    .float-icon { display: grid; place-items: center; width: 35px; height: 35px; border-radius: 11px; color: var(--cyan); background: rgba(85,214,245,.12); }
+    .float-a { top: 15%; left: -2%; animation: float 6s ease-in-out infinite; }
+    .float-b { right: -1%; bottom: 15%; animation: float 7s ease-in-out 1s infinite; }
+    .hero-index { position: absolute; right: 0; bottom: -20px; color: rgba(255,255,255,.28); font: 800 10px/1 'Manrope', sans-serif; letter-spacing: .25em; writing-mode: vertical-rl; }
+    @keyframes float { 0%,100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+
+    /* Program */
+    .program { padding: 86px 0 105px; background: var(--paper); }
+    .program-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 30px; }
+    .program-heading-row .section-heading { margin-bottom: 43px; }
+    .heading-mark { display: flex; align-items: center; gap: 12px; margin-bottom: 44px; color: #8491A7; font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .heading-mark b { color: var(--navy); font: 800 28px/1 'Manrope',sans-serif; letter-spacing: -.07em; }
+    .program-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .program-card { --card-accent: var(--blue); position: relative; display: flex; flex-direction: column; min-height: 250px; padding: 25px; overflow: hidden; border: 1px solid #E2E8F2; border-radius: var(--radius); background: var(--white); transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease; }
+    .program-card::before { content: ''; position: absolute; top: 0; left: 25px; right: 25px; height: 3px; border-radius: 0 0 5px 5px; background: linear-gradient(90deg, var(--card-accent), rgba(85,214,245,.18)); transform: scaleX(.25); transform-origin: left; transition: transform .3s ease; }
+    .program-card:hover { transform: translateY(-6px); border-color: #C7D6FF; box-shadow: var(--shadow); }
+    .program-card:hover::before { transform: scaleX(1); }
+    .card-top { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 26px; }
+    .card-icon { width: 49px; height: 49px; display: grid; place-items: center; border-radius: 15px; color: var(--card-accent); background: color-mix(in srgb, var(--card-accent) 9%, white); }
+    .card-number { align-self: flex-start; color: #BAC4D3; font: 800 12px/1 'Manrope',sans-serif; letter-spacing: .06em; }
+    .program-card h3 { margin: 0 0 10px; color: var(--navy); font: 800 19px/1.25 'Manrope',sans-serif; letter-spacing: -.04em; }
+    .program-card p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.75; }
+    .card-link { display: flex; align-items: center; gap: 7px; margin-top: auto; padding-top: 18px; color: var(--blue); font-size: 11px; font-weight: 800; opacity: 0; transform: translateY(5px); transition: opacity .25s ease, transform .25s ease; }
+    .program-card:hover .card-link, .program-card:focus-within .card-link { opacity: 1; transform: translateY(0); }
+
+    /* Manifesto band */
+    .manifesto-wrap { padding: 0 0 98px; background: var(--paper); }
+    .manifesto { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 35px; min-height: 260px; padding: clamp(30px, 5vw, 58px); overflow: hidden; border-radius: 30px; color: white; background: linear-gradient(120deg, #0B1220 0%, #14264A 100%); box-shadow: 0 28px 65px rgba(11,18,32,.13); }
+    .manifesto::before { content: ''; position: absolute; width: 390px; height: 390px; right: 15%; top: -240px; border: 1px solid rgba(85,214,245,.19); border-radius: 50%; box-shadow: 0 0 0 36px rgba(85,214,245,.025), 0 0 0 72px rgba(85,214,245,.025); pointer-events: none; }
+    .manifesto-copy { position: relative; z-index: 1; max-width: 690px; }
+    .manifesto .eyebrow { color: var(--cyan); }
+    .manifesto h2 { margin: 17px 0 13px; font: 800 clamp(29px, 4vw, 46px)/1.1 'Manrope',sans-serif; letter-spacing: -.055em; }
+    .manifesto p { max-width: 570px; margin: 0; color: #BAC7DA; font-size: 14px; line-height: 1.8; }
+    .manifesto-action { position: relative; z-index: 1; }
+    .manifesto-star { position: absolute; right: 31%; bottom: 18%; color: var(--cyan); font-size: 26px; opacity: .8; }
+
+    /* Form */
+    .ideas { padding: 96px 0 110px; background: #EAF0F8; position: relative; }
+    .ideas::before { content: ''; position: absolute; left: 0; top: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, #CDD8E9, transparent); }
+    .ideas-layout { display: grid; grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr); gap: clamp(30px, 6vw, 82px); align-items: start; }
+    .ideas-copy { padding-top: 14px; }
+    .ideas-copy h2 { margin: 15px 0 18px; color: var(--navy); font: 800 clamp(36px, 4.7vw, 57px)/1.04 'Manrope',sans-serif; letter-spacing: -.065em; }
+    .ideas-copy h2 span { color: var(--blue); }
+    .ideas-copy > p { max-width: 440px; margin: 0; color: #5F6D84; font-size: 15px; line-height: 1.8; }
+    .how-it-works { display: grid; gap: 17px; margin-top: 34px; }
+    .how-item { display: flex; align-items: center; gap: 13px; color: #344259; font-size: 13px; font-weight: 700; }
+    .how-number { display: grid; place-items: center; width: 34px; height: 34px; flex: 0 0 auto; border: 1px solid #D2DDEE; border-radius: 11px; background: rgba(255,255,255,.6); color: var(--blue); font: 800 11px/1 'Manrope', sans-serif; }
+    .privacy-note { display: flex; align-items: flex-start; gap: 10px; max-width: 400px; margin-top: 33px; padding-top: 20px; border-top: 1px solid #D5DFEC; color: #6C7A90; font-size: 11px; line-height: 1.65; }
+    .privacy-note svg { color: var(--blue); margin-top: 1px; }
+    .form-shell { padding: clamp(22px, 4vw, 40px); border: 1px solid rgba(213,223,237,.8); border-radius: 27px; background: white; box-shadow: 0 25px 65px rgba(21,42,78,.09); min-width: 0; }
+    .form-head { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 28px; padding-bottom: 21px; border-bottom: 1px solid #E9EEF5; }
+    .form-head h3 { margin: 0; color: var(--navy); font: 800 21px/1.2 'Manrope',sans-serif; letter-spacing: -.045em; }
+    .form-head p { margin: 7px 0 0; color: #7B8799; font-size: 12px; }
+    .form-stamp { display: grid; place-items: center; width: 46px; height: 46px; flex: 0 0 auto; border-radius: 15px; color: var(--blue); background: #EEF2FF; }
+    .field { margin-bottom: 20px; min-width: 0; }
+    .field label { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px; margin-bottom: 9px; color: #1A2941; font-size: 12px; font-weight: 800; }
+    .field label small { color: #8B96A8; font-size: 11px; font-weight: 500; }
+    .input-wrap { position: relative; }
+    .field select, .field textarea, .field input { display: block; width: 100%; min-width: 0; border: 1px solid #DCE4EF; border-radius: 13px; background: #FBFCFE; color: var(--ink); outline: none; transition: border-color .2s ease, box-shadow .2s ease, background .2s ease; }
+    .field select, .field input { min-height: 49px; padding: 0 14px; }
+    .field select { appearance: none; padding-right: 42px; cursor: pointer; }
+    .select-chevron { position: absolute; top: 50%; right: 15px; pointer-events: none; color: #8390A4; transform: translateY(-50%); }
+    .field textarea { min-height: 132px; padding: 13px 14px; resize: vertical; line-height: 1.65; }
+    .field input::placeholder, .field textarea::placeholder { color: #A2ADBC; }
+    .field select:focus, .field textarea:focus, .field input:focus { background: white; border-color: #7891FF; box-shadow: 0 0 0 4px rgba(49,91,255,.09); }
+    .field-meta { display: flex; justify-content: flex-end; margin-top: 6px; color: #97A2B2; font-size: 10px; }
+    .form-submit { width: 100%; min-height: 54px; border-radius: 14px; }
+    .form-submit:disabled { cursor: wait; opacity: .72; transform: none; }
+    .required-note { margin: 11px 0 0; color: #8A96A8; font-size: 10px; text-align: center; }
+    .form-feedback { display: none; margin-top: 16px; padding: 13px 15px; border-radius: 12px; font-size: 12px; line-height: 1.6; }
+    .form-feedback.show { display: block; }
+    .form-feedback.success { color: #176447; background: #E8F8F0; border: 1px solid #C7EFDC; }
+    .form-feedback.error { color: #9E342D; background: #FFF0EE; border: 1px solid #FFD2CC; }
+
+    /* Footer */
+    .footer { padding: 33px 0 28px; color: #93A1B8; background: var(--navy); }
+    .footer-main { display: flex; justify-content: space-between; align-items: center; gap: 22px; padding-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,.1); }
+    .footer .brand { color: white; }
+    .footer-note { margin: 0; font-size: 11px; line-height: 1.6; text-align: right; }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding-top: 20px; font-size: 10px; }
+    .footer-bottom p { margin: 0; }
+    .footer-social { display: inline-flex; align-items: center; gap: 8px; color: #C9D4E6; font-size: 11px; font-weight: 700; }
+    .footer-social:hover { color: var(--cyan); }
+    .coral-dot { display: inline-block; width: 6px; height: 6px; margin-right: 6px; border-radius: 50%; background: var(--coral); vertical-align: middle; }
+
+    /* Reveal, with safe fallbacks */
+    .js-reveal { opacity: 1; transform: none; }
+    .motion-ready .js-reveal { opacity: 0; transform: translateY(18px); transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.2,1); }
+    .motion-ready .js-reveal.is-visible { opacity: 1; transform: translateY(0); }
+    .delay-1 { transition-delay: .08s !important; }
+    .delay-2 { transition-delay: .16s !important; }
+    .delay-3 { transition-delay: .24s !important; }
+
+    @media (max-width: 980px) {
+      .hero { min-height: auto; padding: 135px 0 110px; }
+      .hero-inner { grid-template-columns: minmax(0, 1fr) minmax(0, .83fr); gap: 20px; }
+      h1 { font-size: clamp(46px, 7vw, 68px); }
+      .hero-art { min-height: 370px; }
+      .float-a { left: -3%; }
+      .float-b { right: -3%; }
+      .program-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .ideas-layout { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 28px; }
+    }
+    @media (max-width: 720px) {
+      .container { width: min(var(--max), calc(100% - 36px)); }
+      .nav-inner { min-height: 68px; }
+      .brand { font-size: 15px; }
+      .brand-mark { width: 36px; height: 36px; border-radius: 12px; }
+      .nav-links { display: none; position: absolute; top: calc(100% + 1px); left: 0; right: 0; padding: 17px 18px 20px; align-items: stretch; flex-direction: column; gap: 0; background: rgba(11,18,32,.98); border-bottom: 1px solid rgba(255,255,255,.1); box-shadow: 0 18px 28px rgba(0,0,0,.17); }
+      .nav-links.is-open { display: flex; }
+      .nav-links a { padding: 14px 5px; border-bottom: 1px solid rgba(255,255,255,.08); }
+      .nav-links a:last-child { border-bottom: 0; }
+      .nav-cta { display: none; }
+      .menu-toggle { display: grid; place-items: center; }
+      .hero { padding: 116px 0 100px; }
+      .hero-inner { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+      .hero-kicker { margin-bottom: 22px; font-size: 9px; }
+      h1 { max-width: 620px; font-size: clamp(47px, 11.5vw, 68px); }
+      .hero-lead { margin-top: 22px; font-size: 15px; }
+      .hero-actions { gap: 10px; margin-top: 27px; }
+      .hero-actions .btn { flex: 1 1 190px; }
+      .hero-footnote { margin-top: 24px; font-size: 10px; }
+      .hero-art { min-height: 345px; margin: 3px 0 -4px; }
+      .orbit { width: min(92%, 340px); }
+      .orbit-2 { width: min(85%, 315px); }
+      .monogram { width: min(70%, 250px); }
+      .monogram-text { font-size: clamp(73px, 19vw, 96px); }
+      .float-a { top: 10%; left: 0; }
+      .float-b { right: 0; bottom: 8%; }
+      .float-card { padding: 10px 11px; gap: 8px; }
+      .float-icon { width: 30px; height: 30px; border-radius: 9px; }
+      .float-card strong { font-size: 10px; }
+      .float-card small { font-size: 9px; }
+      .program { padding: 68px 0 78px; }
+      .program-heading-row { display: block; }
+      .program-heading-row .section-heading { margin-bottom: 25px; }
+      .heading-mark { margin-bottom: 26px; }
+      .section-heading h2 { font-size: clamp(34px, 9vw, 45px); }
+      .section-heading p { font-size: 14px; }
+      .program-grid { gap: 12px; }
+      .program-card { min-height: 235px; padding: 20px; border-radius: 19px; }
+      .program-card::before { left: 20px; right: 20px; }
+      .card-top { margin-bottom: 20px; }
+      .card-icon { width: 43px; height: 43px; border-radius: 13px; }
+      .program-card h3 { font-size: 16px; }
+      .program-card p { font-size: 12px; }
+      .card-link { display: none; }
+      .manifesto-wrap { padding-bottom: 70px; }
+      .manifesto { grid-template-columns: minmax(0, 1fr); gap: 25px; border-radius: 23px; }
+      .manifesto-action .btn { width: 100%; }
+      .manifesto-star { right: 9%; bottom: 31%; }
+      .ideas { padding: 72px 0 78px; }
+      .ideas-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+      .ideas-copy { padding-top: 0; }
+      .ideas-copy h2 { font-size: clamp(39px, 10vw, 52px); }
+      .ideas-copy > p { font-size: 14px; }
+      .how-it-works { grid-template-columns: 1fr; gap: 12px; margin-top: 25px; }
+      .privacy-note { margin-top: 25px; }
+      .form-shell { padding: 23px 18px; border-radius: 22px; }
+      .form-head h3 { font-size: 19px; }
+      .footer-main { align-items: flex-start; flex-direction: column; }
+      .footer-note { text-align: left; }
+      .footer-bottom { align-items: flex-start; flex-direction: column; gap: 13px; }
+    }
+    @media (max-width: 430px) {
+      .container { width: calc(100% - 30px); }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn { width: 100%; }
+      .hero-art { min-height: 305px; }
+      .float-a { top: 8%; }
+      .float-b { bottom: 4%; }
+      .program-grid { grid-template-columns: minmax(0, 1fr); }
+      .program-card { min-height: auto; padding: 21px; }
+      .card-top { margin-bottom: 17px; }
+      .program-card p { font-size: 13px; }
+      .form-stamp { width: 40px; height: 40px; border-radius: 12px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      .motion-ready .js-reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-track" aria-hidden="true"><div class="progress-value" id="scroll-progress"></div></div>
+  <nav class="site-nav" aria-label="Navigazione principale">
+    <div class="container nav-inner">
+      <a class="brand" href="#inizio" aria-label="Pro Omnibus, torna all'inizio">
+        <span class="brand-mark" aria-hidden="true">PO</span>
+        <span class="brand-name">PRO <span>OMNIBUS</span></span>
+      </a>
+      <div class="nav-links" id="nav-links">
+        <a href="#programma">Il programma</a>
+        <a href="mercatino.html">Mercatino libri ↗</a>
+        <a href="#idee">Box proposte</a>
+        <a href="https://instagram.com/proomnibus.official" target="_blank" rel="noopener noreferrer">Instagram ↗</a>
+      </div>
+      <a class="btn btn-primary nav-cta" href="#idee">La tua idea <span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Apri il menu" aria-controls="nav-links" aria-expanded="false">
+        <svg class="icon menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="inizio">
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <div class="hero-kicker"><span class="kicker-dot"></span> Elezioni d'istituto · 2026/2027</div>
+          <h1>La scuola<br>che costruiamo<br><span class="highlight">insieme.</span></h1>
+          <p class="hero-lead">Ascoltare tutti per spingersi più in alto. <strong>Le idee migliori nascono quando ognuno può farsi sentire.</strong></p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#idee">Proponi un'idea <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-ghost" href="#programma">Scopri il programma <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="hero-footnote"><span class="footnote-rule"></span> ASCOLTO <span aria-hidden="true">·</span> PARTECIPAZIONE <span aria-hidden="true">·</span> AZIONE</div>
+        </div>
+        <div class="hero-art" aria-label="Monogramma grafico Pro Omnibus">
+          <div class="art-glow"></div><div class="orbit"></div><div class="orbit orbit-2"></div>
+          <span class="orbit-point point-one"></span><span class="orbit-point point-two"></span>
+          <div class="monogram"><div class="monogram-text">P<span>O</span></div></div>
+          <div class="float-card float-a"><span class="float-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5 8 8 0 0 1-3.4-.8L4 20l1.5-4.1A7.5 7.5 0 1 1 20 11.5Z"/><path d="M8.5 11.5h7M12 8v7"/></svg></span><span><strong>ASCOLTO ATTIVO</strong><small>Ogni voce conta</small></span></div>
+          <div class="float-card float-b"><span class="float-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/><path d="M21 12a9 9 0 1 1-5.5-8.27"/></svg></span><span><strong>IDEE IN AZIONE</strong><small>Facciamo squadra</small></span></div>
+          <span class="hero-index">PRO OMNIBUS / 01</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="program" id="programma">
+      <div class="container">
+        <div class="program-heading-row">
+          <div class="section-heading js-reveal">
+            <span class="eyebrow">Le nostre priorità</span>
+            <h2>Sei idee.<br>Un obiettivo comune.</h2>
+            <p>Proposte concrete per rendere la scuola un posto più attivo, inclusivo e vicino alle esigenze di chi la vive ogni giorno.</p>
+          </div>
+          <div class="heading-mark js-reveal"><b>06</b><span>PUNTI<br>DEL PROGRAMMA</span></div>
+        </div>
+        <div class="program-grid">
+          <article class="program-card js-reveal" style="--card-accent:#315BFF">
+            <div class="card-top"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h.01M15 10h.01M9 14h.01M15 14h.01M10 21v-3h4v3"/></svg></span><span class="card-number">01 / 06</span></div>
+            <h3>Punti ristoro</h3><p>Ci batteremo per rimettere i distributori automatici nella scuola e migliorare i servizi di ristoro per tutti.</p><a class="card-link" href="#idee">Condividi la tua idea <span>↗</span></a>
+          </article>
+          <article class="program-card js-reveal delay-1" style="--card-accent:#2447D8">
+            <div class="card-top"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3.5 20v-1.5A4.5 4.5 0 0 1 8 14h2a4.5 4.5 0 0 1 4.5 4.5V20M16 5.5a3 3 0 0 1 0 5.8M17 14h.5a3.5 3.5 0 0 1 3.5 3.5V20"/></svg></span><span class="card-number">02 / 06</span></div>
+            <h3>Peer-tutoring</h3><p>Promozione dell'aiuto reciproco allo studio tra studenti con riconoscimento di crediti scolastici.</p><a class="card-link" href="#idee">Condividi la tua idea <span>↗</span></a>
+          </article>
+          <article class="program-card js-reveal delay-2" style="--card-accent:#315BFF">
+            <div class="card-top"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 21h8M12 17v4M7 4h10l-1 8a4 4 0 0 1-8 0L7 4Z"/><path d="M7 7H4v2a4 4 0 0 0 4 4M17 7h3v2a4 4 0 0 1-4 4"/></svg></span><span class="card-number">03 / 06</span></div>
+            <h3>Attività sportive</h3><p>Introduzione di attività sportive scolastiche, tornei interclasse e valorizzazione delle giornate dedicate allo sport.</p><a class="card-link" href="#idee">Condividi la tua idea <span>↗</span></a>
+          </article>
+          <article class="program-card js-reveal" style="--card-accent:#188DAF">
+            <div class="card-top"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v3H9zM8 6h8l1 14H7L8 6Z"/><path d="M10 10h4M10 14h4"/></svg></span><span class="card-number">04 / 06</span></div>
+            <h3>Scuola plastic-free</h3><p>Riduzione dell'impatto ambientale con borracce ecologiche personalizzate nel merchandising del liceo.</p><a class="card-link" href="#idee">Condividi la tua idea <span>↗</span></a>
+          </article>
+          <article class="program-card js-reveal delay-1" style="--card-accent:#315BFF">
+            <div class="card-top"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3.5A2.5 2.5 0 0 1 7.5 6H20v15H7.5A2.5 2.5 0 0 1 5 18.5v-15Z"/><path d="M5 6v12.5A2.5 2.5 0 0 0 7.5 21M9 8h7M9 12h7"/></svg></span><span class="card-number">05 / 06</span></div>
+            <h3>Mercatino online</h3><p>Una piattaforma per trovare, scambiare e dare nuova vita ai libri e al materiale scolastico usato.</p><a class="card-link" href="mercatino.html">Esplora il mercatino <span>↗</span></a>
+          </article>
+          <article class="program-card js-reveal delay-2" style="--card-accent:#2447D8">
+            <div class="card-top"><span class="card-icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16M2 21h20M9 7h6M9 11h6M9 15h3"/><path d="m14 18 2 2 4-5"/></svg></span><span class="card-number">06 / 06</span></div>
+            <h3>Open day attivi</h3><p>Rendere gli studenti diretti protagonisti nell'organizzazione e nella gestione dell'orientamento scolastico.</p><a class="card-link" href="#idee">Condividi la tua idea <span>↗</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="manifesto-wrap">
+      <div class="container">
+        <div class="manifesto js-reveal">
+          <div class="manifesto-copy"><span class="eyebrow">La scuola è anche tua</span><h2>Le idee non servono<br>se restano in silenzio.</h2><p>Hai visto qualcosa da migliorare? Hai un progetto che vorresti realizzare? Raccontacelo: ascoltare tutti è il primo passo per cambiare le cose.</p></div>
+          <div class="manifesto-action"><a class="btn btn-primary" href="#idee">Fatti sentire <span aria-hidden="true">↗</span></a></div>
+          <span class="manifesto-star" aria-hidden="true">✳</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="ideas" id="idee">
+      <div class="container ideas-layout">
+        <div class="ideas-copy js-reveal">
+          <span class="eyebrow">Box proposte</span>
+          <h2>La prossima<br>idea forte è<br><span>la tua.</span></h2>
+          <p>Pro Omnibus vuol dire ascoltare tutti. Lasciaci un parere, un consiglio o un problema da risolvere a scuola. Ogni contributo può fare la differenza.</p>
+          <div class="how-it-works">
+            <div class="how-item"><span class="how-number">01</span> Scegli l'area che ti interessa</div>
+            <div class="how-item"><span class="how-number">02</span> Raccontaci la tua proposta</div>
+            <div class="how-item"><span class="how-number">03</span> Inviala: al resto pensiamo noi</div>
+          </div>
+          <div class="privacy-note"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg><span>Il nome è facoltativo: puoi inviare la tua proposta anche in forma anonima.</span></div>
+        </div>
+        <div class="form-shell js-reveal delay-1">
+          <div class="form-head"><div><h3>Mettiamoci in ascolto.</h3><p>La tua voce ha spazio qui.</p></div><span class="form-stamp"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4 18-7Z"/></svg></span></div>
+          <form id="form-proposte">
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;opacity:0">
+            <div class="field"><label for="area">01. Area di interesse <span aria-hidden="true">*</span></label><div class="input-wrap"><select id="area" name="area" required><option value="" disabled selected>Seleziona l'argomento</option><option value="strutture">Strutture e distributori</option><option value="sport">Sport e attività</option><option value="didattica">Didattica e studio</option><option value="eventi">Eventi e socialità</option><option value="ambiente">Ambiente e sostenibilità</option><option value="altro">Altro</option></select><svg class="icon select-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div></div>
+            <div class="field"><label for="messaggio">02. La tua proposta <span aria-hidden="true">*</span></label><textarea id="messaggio" name="messaggio" required maxlength="2000" placeholder="Descrivi la tua idea o il problema che vorresti risolvere…"></textarea><div class="field-meta"><span id="char-count">0 / 2000</span></div></div>
+            <div class="field"><label for="contatto">03. Come ti chiami? <small>(facoltativo)</small></label><input type="text" id="contatto" name="contatto" maxlength="100" placeholder="Nome e classe, oppure lascia vuoto"></div>
+            <button class="btn btn-primary form-submit" type="submit" id="btn-invia"><span id="submit-label">Invia la proposta</span><svg class="icon" id="submit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button>
+            <p class="required-note">* Campi obbligatori</p>
+            <div class="form-feedback" id="form-feedback" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-main">
+        <a class="brand" href="#inizio"><span class="brand-mark" aria-hidden="true">PO</span><span class="brand-name">PRO <span>OMNIBUS</span></span></a>
+        <p class="footer-note">Convitto Nazionale di Stato<br><strong style="color:#D7E0EF;font-weight:700">Tommaso Campanella</strong></p>
+      </div>
+      <div class="footer-bottom"><p>© 2026/2027 Lista Pro Omnibus. <span class="coral-dot"></span>Ascoltare tutti per spingersi più in alto.</p><a class="footer-social" href="mercatino.html" style="margin-right:18px">Mercatino libri ↗</a><a class="footer-social" href="https://instagram.com/proomnibus.official" target="_blank" rel="noopener noreferrer"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg> Seguici su Instagram ↗</a></div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      menuToggle?.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('is-open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? 'Chiudi il menu' : 'Apri il menu');
+      });
+      navLinks?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+        navLinks.classList.remove('is-open');
+        menuToggle?.setAttribute('aria-expanded', 'false');
+        menuToggle?.setAttribute('aria-label', 'Apri il menu');
+      }));
+
+      const progress = document.getElementById('scroll-progress');
+      const updateProgress = () => {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = `${max > 0 ? (window.scrollY / max) * 100 : 0}%`;
+      };
+      window.addEventListener('scroll', updateProgress, { passive: true });
+      window.addEventListener('resize', updateProgress);
+      updateProgress();
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealEls = document.querySelectorAll('.js-reveal');
+      if ('IntersectionObserver' in window && !reduceMotion) {
+        document.body.classList.add('motion-ready');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        revealEls.forEach((el) => observer.observe(el));
+      }
+
+      const textarea = document.getElementById('messaggio');
+      const charCount = document.getElementById('char-count');
+      textarea?.addEventListener('input', () => { charCount.textContent = `${textarea.value.length} / 2000`; });
+
+      const form = document.getElementById('form-proposte');
+      const submitButton = document.getElementById('btn-invia');
+      const submitLabel = document.getElementById('submit-label');
+      const feedback = document.getElementById('form-feedback');
+      form?.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        if (!form.reportValidity()) return;
+        const payload = {
+          area: document.getElementById('area').value,
+          messaggio: textarea.value.trim(),
+          contatto: document.getElementById('contatto').value.trim(),
+          website: document.getElementById('website').value
+        };
+        if (!payload.messaggio) {
+          textarea.focus();
+          return;
+        }
+        feedback.className = 'form-feedback';
+        feedback.textContent = '';
+        submitButton.disabled = true;
+        submitLabel.textContent = 'Invio in corso…';
+        try {
+          const response = await fetch('/api/proposte.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.error || 'Non è stato possibile inviare la proposta. Riprova.');
+          feedback.className = 'form-feedback success show';
+          feedback.textContent = 'Proposta inviata! Grazie per aver contribuito: leggeremo la tua idea con attenzione.';
+          form.reset();
+          charCount.textContent = '0 / 2000';
+        } catch (error) {
+          feedback.className = 'form-feedback error show';
+          feedback.textContent = error.message || 'Errore di connessione. Controlla la rete e riprova.';
+        } finally {
+          submitButton.disabled = false;
+          submitLabel.textContent = 'Invia la proposta';
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
